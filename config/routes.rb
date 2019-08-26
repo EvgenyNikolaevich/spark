@@ -9,4 +9,9 @@ Rails.application.routes.draw do
   # the default of "spree".
   mount Spree::Core::Engine, at: '/'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  # resources :meow_products, only: [:index, :create]
+
+  Spree::Core::Engine.routes.draw do
+    get '/admin/csv_downloader' => 'admin/csv_downloader#index'
+  end
 end
