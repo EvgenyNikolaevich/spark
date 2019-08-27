@@ -4,20 +4,17 @@ require 'csv'
 
 module Spree
   class CsvDownloader < Spree::Base
-
-    # TODO: delete and add initialize
     class << self
-      def read_csv
-        csv_string = prepare_csv
+      def read_csv(file_path = 'sample.csv')
+        csv_string = prepare_csv(file_path)
         struct(csv_string)
       end
 
       private
 
-      # read data from csv-file, delete nil
-      def prepare_csv(path_to_file = 'sample.csv')
+      def prepare_csv(file_path)
         csv_array = CSV.read(
-          path_to_file,
+          file_path,
           {
             headers: true,
             header_converters: :symbol,
@@ -26,11 +23,9 @@ module Spree
           }
         )
 
-        # remove arrays where all values are nil
         csv_array.reject { |array| array.to_hash.values.all?(&:nil?) }
       end
 
-      # TODO: make logs more beauty
       # TODO: move to another place?
       def struct(csv_string)
         csv_string.map do |value|
@@ -44,10 +39,7 @@ module Spree
                                    shipping_category_id: shipping_category_id_by_name(value[7])
                                   )
           rescue ActiveRecord::RecordInvalid => exception
-            Rails.logger.info "+" * 10
-            Rails.logger.info "Exception when creating a new product:"
-            Rails.logger.info exception
-            Rails.logger.info "+" * 10
+            logger('Exception when creating a new product:', exception)
           end
         end
       end
@@ -62,6 +54,13 @@ module Spree
       def set_price(amount, currency = 'USD', variant_id = 1)
         # variant_id is some business thing, what should it be?..
         Spree::Price.create(amount: amount, currency: currency, variant_id: variant_id)
+      end
+
+      def logger(message, exception)
+        Rails.logger.info "+" * 10
+        Rails.logger.info message
+        Rails.logger.info exception
+        Rails.logger.info "+" * 10
       end
     end
   end
