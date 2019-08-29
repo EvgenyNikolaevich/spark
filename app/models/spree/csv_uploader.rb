@@ -1,9 +1,9 @@
-# model for downloading csv file and add values to DB
+# model for uploading csv file and add values to DB
 # README before read this class
 require 'csv'
 
 module Spree
-  class CsvDownloader < Spree::Base
+  class CsvUploader < Spree::Base
     class << self
       def read_csv(file_path = 'sample.csv')
         csv_string = prepare_csv(file_path)

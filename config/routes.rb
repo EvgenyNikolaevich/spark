@@ -12,6 +12,6 @@ Rails.application.routes.draw do
   # resources :meow_products, only: [:index, :create]
 
   Spree::Core::Engine.routes.draw do
-    get '/admin/csv_downloader' => 'admin/csv_downloader#index'
+    get '/admin/csv_uploader' => 'admin/csv_uploader#index'
   end
 end
