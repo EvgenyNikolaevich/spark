@@ -8,7 +8,7 @@ I wrote a lot of TODO in a model and there a lot of work about refactoring and m
 But for now, I have a really raw result. I understand it but still send you my decision because I feel bad cause you waiting so long time.
 
 For the next link we can get some information about downloading process:
-`http: // localhost: 3000 / admin / csv_downloader`
+`http://localhost:3000/admin/csv_uploader`
 
 But unfortunately, it still does not work properly. It still works in progress.
 
