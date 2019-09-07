@@ -5,7 +5,7 @@ require 'csv'
 module Spree
   class CsvUploader < Spree::Base
     class << self
-      def read_csv(file_path = 'sample.csv')
+      def read_csv(file_path)
         csv_string = prepare_csv(file_path)
         struct(csv_string)
       end

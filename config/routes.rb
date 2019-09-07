@@ -13,5 +13,6 @@ Rails.application.routes.draw do
 
   Spree::Core::Engine.routes.draw do
     get '/admin/csv_uploader' => 'admin/csv_uploader#index'
+    post '/admin/csv_uploader' => 'admin/csv_uploader#upload'
   end
 end
