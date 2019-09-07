@@ -1,8 +1,7 @@
-# model for uploading csv file and add values to DB
-# README before read this class
 require 'csv'
 
 module Spree
+  # model for uploading csv file and add values to DB
   class CsvUploader < Spree::Base
     class << self
       def read_csv(file_path)
@@ -15,18 +14,14 @@ module Spree
       def prepare_csv(file_path)
         csv_array = CSV.read(
           file_path,
-          {
-            headers: true,
-            header_converters: :symbol,
-            converters: :all,
-            col_sep: ';'
-          }
+          headers: true,
+          header_converters: :symbol,
+          converters: :all,
+          col_sep: ';'
         )
-
         csv_array.reject { |array| array.to_hash.values.all?(&:nil?) }
       end
 
-      # TODO: move to another place?
       def struct(csv_string)
         csv_string.map do |value|
           begin
@@ -44,16 +39,16 @@ module Spree
         end
       end
 
-      # TODO: move to another place
       def shipping_category_id_by_name(name)
         name = 'Default' if name.blank?
         Spree::ShippingCategory.find_or_create_by(name: name).id
       end
 
-      # TODO: move to another place
       def set_price(amount, currency = 'USD', variant_id = 1)
         # variant_id is some business thing, what should it be?..
-        Spree::Price.create(amount: amount, currency: currency, variant_id: variant_id)
+        Spree::Price.create(amount: amount,
+                            currency: currency,
+                            variant_id: variant_id)
       end
 
       def logger(message, exception)
