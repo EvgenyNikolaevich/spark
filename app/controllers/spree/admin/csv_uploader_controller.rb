@@ -2,7 +2,7 @@ module Spree
   module Admin
     class CsvUploaderController < Spree::Admin::ResourceController
       def upload
-        Spree::CsvUploader.read_csv('sample.csv')
+        process_info = Spree::CsvUploader.read_csv(form_params[:file])
       end
 
       private
