@@ -2,7 +2,12 @@ module Spree
   module Admin
     class CsvUploaderController < Spree::Admin::ResourceController
       def upload
-        process_info = Spree::CsvUploader.read_csv(form_params[:file])
+        if form_params[:file].present?
+          Spree::CsvUploader.read_csv(form_params[:file])
+          render 'show'
+        else
+          redirect_to action: 'index'
+        end
       end
 
       private
