@@ -22,21 +22,30 @@ module Spree
         csv_array.reject { |array| array.to_hash.values.all?(&:nil?) }
       end
 
+      # TODO: need reorganization
       def struct(csv_string)
+        product_list = {}
         csv_string.map do |value|
-          begin
-            Spree::Product.create!(name: value[1],
-                                   description: value[2],
-                                   price: set_price(value[3]),
-                                   available_on: value[4],
-                                   slug: value[5],
-                                   #stock_total: value[6],
-                                   shipping_category_id: shipping_category_id_by_name(value[7])
-                                  )
-          rescue ActiveRecord::RecordInvalid => exception
-            logger('Exception when creating a new product:', exception)
-          end
+          product = {
+            name: value[:name],
+            description: value[:description],
+            price: set_price(value[:price]),
+            available_on: value[:availability_date],
+            slug: value[:slug],
+            #stock_total: value[:stock_total],
+            shipping_category_id: shipping_category_id_by_name(value[:category])
+          }
+          product_list[value[:name]] = save_product(product)
         end
+        product_list
+      end
+
+      def save_product(product)
+        Spree::Product.create!(product)
+        'The product was successfully created.'
+      rescue ActiveRecord::RecordInvalid => exception
+        logger('Exception when creating a new product:', exception)
+        "The product was not created, because of #{exception}"
       end
 
       def shipping_category_id_by_name(name)
